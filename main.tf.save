@@ -1,0 +1,49 @@
+provider "aws" {
+ access_key = "AKIASRK2ICQPHAODNX2Z"
+ secret_key = "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"
+ region = "us-east-1"
+}  
+
+resource "aws_instance" "jai-instance" {
+ ami           = "ami-2757f631"
+ instance_type = "t2.micro"
+ tags = {
+    Name = "Jai-Simplilearn-Project"
+ }
+ key_name= "aws_key"
+    vpc_security_group_ids = [aws_security_group.main.id]
+}
+
+resource "aws_security_group" "main" {
+  egress = [
+    {
+      cidr_blocks      = [ "0.0.0.0/0", ]
+      description      = ""
+      from_port        = 0
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "-1"
+      security_groups  = []
+      self             = false
+      to_port          = 0
+    }
+  ]
+ ingress                = [
+   {
+     cidr_blocks      = [ "0.0.0.0/0", ]
+     description      = ""
+     from_port        = 22
+     ipv6_cidr_blocks = []
+     prefix_list_ids  = []
+     protocol         = "tcp"
+     security_groups  = []
+     self             = false
+     to_port          = 22
+  }
+  ]
+}
+
+resource "aws_key_pair" "deployer" {
+  key_name   = "aws_key"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5FP7SOB5jQfcPpPkijvWz9EuKvvw3id3qxBfQNR+gHLw48mWwWGZURW6eYcMsp3Khp9lkcVZ6ZGNS2dLeaCBuQ3yekBHoy30x2dRaJE8TpQ7eILBo15eEoE8m5sttq+aAbW5BFWFrmNpXF6+ZR+Dw4irN2ovPS5WTrL/aMxkQOwxRrsxl/5S9VyIXye0X5+PhsDldL0vfFbAhgXzu8WlFw+QlnohyZxJzecQMOq7BrJb5wn1Xokhgsxw3joTNiQq3Q1VP7KN+J8pPpppQvmoD7XW2VgZ5jA16WFPdHSDgmDyk590zt0/iU7woLnJQfRvx4YA+QeeaFblY9DT89/8R khamlou@khamlou-ThinkPad-T460s"
+}
